@@ -1,12 +1,12 @@
 # Honest Governor
 
-**Prevents systems from mistaking internal model adaptation for real-world recovery.**
+**Reduces oscillation in threshold-based control systems under noisy signals.**
 
 A simple, memory-based stability controller that stops adaptive systems from oscillating between safe and unsafe modes.
 
 ---
 
-## 🧠 The Problem
+## The Problem
 
 Adaptive systems often fail in a predictable loop:
 
@@ -21,7 +21,7 @@ The core issue: **You can't tell the difference between "the model learned" and 
 
 ---
 
-## ⚙️ The Solution
+## The Solution
 
 Instead of only asking:
 
@@ -35,7 +35,7 @@ This is implemented using **counterfactual regret tracking**: a short-term memor
 
 ---
 
-## 🧩 Core Mechanism
+## Core Mechanism
 
 The governor maintains:
 
@@ -53,7 +53,7 @@ The governor maintains:
 
 ---
 
-## 🔁 Decision Logic
+## Decision Logic
 
 ### Escalation (fast → cautious → halt)
 
@@ -70,7 +70,7 @@ This prevents false recovery.
 
 ---
 
-## 📊 Typical Impact
+## Typical Impact
 
 In simulated environments:
 - **60–80% reduction** in state switching vs naive thresholding
@@ -93,7 +93,7 @@ In simulated environments:
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Installation
 
@@ -127,7 +127,7 @@ print(result["modified_action"])   # Action after governor filtering
 
 ---
 
-## 📖 Common Use Cases
+## Common Use Cases
 
 ### 1. LLM Agents with Tool Retry
 
@@ -170,7 +170,7 @@ robot.apply(modified_action)
 
 ---
 
-## ⚙️ Configuration
+## Configuration
 
 ```python
 agent = HonestGovernorAgent(
@@ -205,9 +205,19 @@ agent = HonestGovernorAgent(
 - Higher `drop_threshold` (e.g., 0.4)
 - Higher `regret_de_escalation_threshold` (e.g., 0.3)
 
+## ⚠️ Limitations
+
+This system is a lightweight control primitive, not a calibrated safety system.
+
+Aggressive configurations (high rise thresholds, high regret tolerance, or low drop thresholds) can:
+- delay recovery from instability
+- create false-stable states
+- amplify oscillation under noisy signals
+
+Use caution in production or safety-critical environments.
 ---
 
-## 📊 Monitoring
+## Monitoring
 
 ```python
 # Get current status
@@ -228,7 +238,7 @@ agent.reset()
 
 ---
 
-## 🧪 Testing
+## Testing
 
 Run the full test suite:
 
